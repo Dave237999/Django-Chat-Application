@@ -1,0 +1,87 @@
+# 💬 Django Chat Application
+
+Une application de messagerie instantanée en temps réel développée avec Django et propulsée par une base de données MySQL. L'application permet aux utilisateurs de rejoindre des salons de discussion spécifiques et d'échanger des messages qui s'affichent instantanément du plus récent au plus ancien.
+
+## 🚀 Fonctionnalités
+
+- **Salons multiples** : Création et accès à des salons de discussion uniques.
+- **Messagerie dynamique** : Envoi et récupération des messages en arrière-plan sans recharger la page (AJAX/jQuery).
+- **Tri intelligent** : Affichage des messages par ordre chronologique inversé (les plus récents en premier).
+- **Base de données relationnelle** : Structure MySQL optimisée avec contraintes de clés étrangères (`ON DELETE CASCADE`).
+
+## 🛠️ Technologies utilisées
+
+- **Backend** : Django (Python)
+- **Frontend** : HTML5, CSS3, JavaScript (jQuery / AJAX)
+- **Base de données** : MySQL (via WampServer)
+- **Connecteur DB** : `mysqlclient` (ou `PyMySQL`)
+
+## 📋 Prérequis
+
+Avant de lancer le projet, assurez-vous d'avoir installé :
+- Python 3.x
+- WampServer (avec MySQL opérationnel)
+
+## 🔧 Installation et Configuration
+
+### 1. Cloner le projet et préparer l'environnement
+```bash
+# Cloner le dépôt
+git clone https://github.com
+cd djangochat
+
+# Créer et activer l'environnement virtuel
+python -m venv env
+# Sur Windows (PowerShell) :
+.\env\Scripts\Activate.ps1
+```
+
+### 2. Installer les dépendances
+```bash
+pip install django mysqlclient
+```
+
+### 3. Configurer la Base de Données (WampServer)
+1. Lancez WampServer et ouvrez **phpMyAdmin**.
+2. Créez une nouvelle base de données (ex: `djangochat`).
+3. Mettez à jour la section `DATABASES` dans le fichier `djangochat/settings.py` avec vos identifiants MySQL.
+
+### 4. Initialiser la structure MySQL
+Pour garantir la communication parfaite entre vos salons et vos messages, exécutez ce script SQL brut dans l'onglet SQL de votre base sur phpMyAdmin :
+
+```sql
+CREATE TABLE `chat_room` (
+    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `chat_message` (
+    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `value` longtext NOT NULL,
+    `date` datetime(6) NOT NULL,
+    `user` longtext NOT NULL,
+    `room_id` bigint NOT NULL,
+    CONSTRAINT `fk_chat_message_room` 
+        FOREIGN KEY (`room_id`) REFERENCES `chat_room` (`id`) 
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+Synchronisez ensuite Django avec la base de données :
+```bash
+python manage.py migrate chat --fake-initial
+```
+
+## 💻 Démarrage de l'application
+
+Lancez le serveur de développement de Django :
+```bash
+python manage.py runserver
+```
+Ouvrez votre navigateur et accédez à l'adresse : `http://127.0.0`
+
+## 📁 Structure de la Base de Données
+
+L'application s'appuie sur deux tables clés interconnectées :
+- `chat_room` : Stocke le nom des salons de discussion.
+- `chat_message` : Stocke le contenu textuel (`value`), l'auteur (`user`), le timestamp (`date`) et l'identifiant du salon (`room_id`).
