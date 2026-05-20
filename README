@@ -14,7 +14,7 @@ Une application de messagerie instantanée en temps réel développée avec Djan
 - **Backend** : Django (Python)
 - **Frontend** : HTML5, CSS3, JavaScript (jQuery / AJAX)
 - **Base de données** : MySQL (via WampServer)
-- **Connecteur DB** : `mysqlclient` (ou `PyMySQL`)
+- **Connecteur DB** : `mysqlclient`
 
 ## 📋 Prérequis
 
