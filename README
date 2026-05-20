@@ -60,9 +60,9 @@ CREATE TABLE `chat_message` (
     `value` longtext NOT NULL,
     `date` datetime(6) NOT NULL,
     `user` longtext NOT NULL,
-    `room_id` bigint NOT NULL,
+    `room` bigint NOT NULL,
     CONSTRAINT `fk_chat_message_room` 
-        FOREIGN KEY (`room_id`) REFERENCES `chat_room` (`id`) 
+        FOREIGN KEY (`room`) REFERENCES `chat_room` (`id`) 
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
